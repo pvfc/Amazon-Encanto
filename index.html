@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amazon Encanto Restaurante – Cardápio</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --verde-escuro: #1a3a2a;
+    --verde-medio: #2d6a4f;
+    --verde-claro: #52b788;
+    --dourado: #c9a84c;
+    --dourado-claro: #f0c060;
+    --bege: #f5f0e8;
+    --branco: #fdfaf5;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: var(--verde-escuro);
+    font-family: 'Raleway', sans-serif;
+    color: var(--bege);
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse at 10% 20%, rgba(45,106,79,0.4) 0%, transparent 50%),
+      radial-gradient(ellipse at 90% 80%, rgba(82,183,136,0.2) 0%, transparent 50%),
+      url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%232d6a4f' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .header { text-align:center; padding:48px 20px 32px; }
+  .header::before { content:'🌿'; font-size:2.5rem; display:block; margin-bottom:8px; animation:sway 3s ease-in-out infinite alternate; }
+  @keyframes sway { from{transform:rotate(-8deg)} to{transform:rotate(8deg)} }
+  .logo-nome { font-family:'Playfair Display',serif; font-size:clamp(2rem,6vw,3.5rem); font-weight:900; color:var(--dourado); letter-spacing:2px; text-shadow:0 2px 20px rgba(201,168,76,0.4); }
+  .logo-sub { font-size:0.85rem; letter-spacing:6px; text-transform:uppercase; color:var(--verde-claro); margin-top:6px; }
+  .divider { width:120px; height:2px; background:linear-gradient(90deg,transparent,var(--dourado),transparent); margin:18px auto; }
+  .container { max-width:860px; margin:0 auto; padding:0 16px 60px; }
+  .card { background:rgba(253,250,245,0.05); border:1px solid rgba(201,168,76,0.25); border-radius:16px; padding:28px; margin-bottom:24px; backdrop-filter:blur(6px); transition:border-color 0.3s; }
+  .card:hover { border-color:rgba(201,168,76,0.5); }
+  .card-titulo { font-family:'Playfair Display',serif; font-size:1.3rem; color:var(--dourado); margin-bottom:18px; display:flex; align-items:center; gap:10px; }
+  .linha-inputs { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media(max-width:500px){.linha-inputs{grid-template-columns:1fr}}
+  label { display:block; font-size:0.72rem; text-transform:uppercase; letter-spacing:2px; color:var(--verde-claro); margin-bottom:6px; font-weight:600; }
+  input, select, textarea { width:100%; background:rgba(255,255,255,0.06); border:1px solid rgba(201,168,76,0.3); border-radius:10px; padding:12px 14px; color:var(--bege); font-family:'Raleway',sans-serif; font-size:0.95rem; outline:none; transition:border-color 0.25s,background 0.25s; }
+  input:focus, select:focus, textarea:focus { border-color:var(--dourado); background:rgba(255,255,255,0.10); }
+  select option { background:var(--verde-escuro); color:var(--bege); }
+  textarea { resize:vertical; min-height:70px; }
+  .secao-titulo { font-family:'Playfair Display',serif; font-size:1.05rem; color:var(--dourado-claro); border-bottom:1px solid rgba(201,168,76,0.25); padding-bottom:8px; margin:20px 0 14px; display:flex; align-items:center; gap:8px; }
+  .item-grid { display:grid; gap:10px; }
+
+  /* ITEM PRATO */
+  .item-card { background:rgba(255,255,255,0.04); border:1px solid rgba(201,168,76,0.15); border-radius:12px; padding:14px 16px; display:flex; align-items:flex-start; gap:14px; transition:all 0.25s; cursor:pointer; }
+  .item-card.selecionado { background:rgba(82,183,136,0.12); border-color:var(--verde-claro); }
+  .item-card:hover { border-color:rgba(201,168,76,0.4); }
+  .item-check { width:22px; height:22px; border-radius:6px; border:2px solid rgba(201,168,76,0.4); flex-shrink:0; margin-top:2px; display:flex; align-items:center; justify-content:center; transition:all 0.2s; font-size:0.8rem; }
+  .item-card.selecionado .item-check { background:var(--verde-claro); border-color:var(--verde-claro); }
+  .item-info { flex:1; }
+  .item-nome { font-weight:600; font-size:0.95rem; color:var(--bege); margin-bottom:3px; }
+  .item-desc { font-size:0.78rem; color:rgba(245,240,232,0.55); line-height:1.4; }
+  .item-acomp { font-size:0.73rem; color:var(--verde-claro); margin-top:5px; font-style:italic; opacity:0.85; }
+  .item-preco { font-family:'Playfair Display',serif; font-size:1rem; color:var(--dourado); white-space:nowrap; font-weight:700; }
+  .item-qtd { display:flex; align-items:center; gap:8px; margin-top:8px; }
+  .btn-qtd { width:28px; height:28px; border-radius:50%; background:rgba(201,168,76,0.15); border:1px solid var(--dourado); color:var(--dourado); font-size:1.1rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background 0.2s; line-height:1; padding:0; }
+  .btn-qtd:hover { background:rgba(201,168,76,0.3); }
+  .qtd-num { font-weight:700; min-width:24px; text-align:center; color:var(--bege); font-size:1rem; }
+  .obs-item { margin-top:8px; }
+  .obs-item input { font-size:0.82rem; padding:8px 12px; }
+
+  /* PORÇÕES INDIVIDUAIS */
+  .porcao-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px; }
+  .porcao-card { background:rgba(255,255,255,0.04); border:1px solid rgba(201,168,76,0.15); border-radius:12px; padding:14px; cursor:pointer; transition:all 0.25s; display:flex; flex-direction:column; gap:6px; }
+  .porcao-card.selecionado { background:rgba(82,183,136,0.12); border-color:var(--verde-claro); }
+  .porcao-card:hover { border-color:rgba(201,168,76,0.4); }
+  .porcao-nome { font-weight:600; font-size:0.9rem; color:var(--bege); }
+  .porcao-desc { font-size:0.75rem; color:rgba(245,240,232,0.55); line-height:1.35; }
+  .porcao-preco { font-family:'Playfair Display',serif; font-size:1rem; color:var(--dourado); font-weight:700; margin-top:4px; }
+  .porcao-qtd { display:flex; align-items:center; gap:8px; margin-top:6px; }
+
+  .badge-novo { background:var(--dourado); color:var(--verde-escuro); font-size:0.6rem; font-weight:800; letter-spacing:1px; padding:2px 7px; border-radius:20px; text-transform:uppercase; vertical-align:middle; }
+
+  /* RESUMO */
+  .resumo-linha { display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid rgba(201,168,76,0.1); font-size:0.9rem; }
+  .resumo-linha:last-child { border-bottom:none; }
+  .resumo-nome { color:var(--bege); }
+  .resumo-preco { color:var(--dourado); font-weight:700; font-family:'Playfair Display',serif; }
+  .resumo-total { display:flex; justify-content:space-between; align-items:center; padding:16px 0 0; margin-top:8px; border-top:2px solid rgba(201,168,76,0.4); }
+  .resumo-total-label { font-family:'Playfair Display',serif; font-size:1.15rem; color:var(--dourado); }
+  .resumo-total-valor { font-family:'Playfair Display',serif; font-size:1.4rem; color:var(--dourado-claro); font-weight:700; }
+
+  /* PAGAMENTO */
+  .pag-opcoes { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:4px; }
+  .pag-btn { border:2px solid rgba(201,168,76,0.3); border-radius:12px; padding:16px 12px; text-align:center; cursor:pointer; transition:all 0.25s; background:rgba(255,255,255,0.04); }
+  .pag-btn.ativo { border-color:var(--dourado); background:rgba(201,168,76,0.12); }
+  .pag-btn:hover { border-color:rgba(201,168,76,0.6); }
+  .pag-icone { font-size:1.8rem; margin-bottom:6px; }
+  .pag-label { font-size:0.85rem; font-weight:600; color:var(--bege); }
+  .pag-sub { font-size:0.72rem; color:rgba(245,240,232,0.5); margin-top:2px; }
+  .pix-info { background:rgba(45,106,79,0.2); border:1px solid rgba(82,183,136,0.35); border-radius:12px; padding:16px; margin-top:14px; text-align:center; }
+  .pix-chave { font-family:'Playfair Display',serif; font-size:1.15rem; color:var(--dourado); letter-spacing:1px; margin:4px 0; }
+  .pix-instrucao { font-size:0.8rem; color:rgba(245,240,232,0.6); }
+
+  /* BOTÃO */
+  .btn-enviar { width:100%; padding:18px; background:linear-gradient(135deg,#25d366,#128c4e); border:none; border-radius:14px; color:#fff; font-family:'Raleway',sans-serif; font-size:1.05rem; font-weight:700; letter-spacing:1px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:12px; transition:all 0.3s; box-shadow:0 6px 24px rgba(37,211,102,0.3); margin-top:8px; }
+  .btn-enviar:hover { transform:translateY(-2px); box-shadow:0 10px 32px rgba(37,211,102,0.45); }
+  .btn-enviar svg { width:22px; height:22px; fill:#fff; }
+  .aguardando { display:none; background:rgba(45,106,79,0.2); border:1px solid rgba(82,183,136,0.35); border-radius:14px; padding:24px; text-align:center; margin-top:16px; }
+  .aguardando.visivel { display:block; }
+  .aguardando-icone { font-size:2.5rem; animation:pulse 1.5s ease-in-out infinite; }
+  @keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.12);opacity:0.75}}
+  .aguardando-txt { font-family:'Playfair Display',serif; font-size:1.1rem; color:var(--dourado); margin-top:10px; }
+  .aguardando-sub { font-size:0.82rem; color:rgba(245,240,232,0.6); margin-top:6px; }
+  .vazio { text-align:center; padding:24px; color:rgba(245,240,232,0.4); font-size:0.9rem; font-style:italic; }
+  .footer { text-align:center; padding:20px; font-size:0.75rem; color:rgba(245,240,232,0.3); letter-spacing:1px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo-nome">Amazon Encanto</div>
+  <div class="logo-sub">Restaurante · Sabores da Floresta</div>
+  <div class="divider"></div>
+</div>
+
+<div class="container">
+
+  <!-- IDENTIFICAÇÃO -->
+  <div class="card">
+    <div class="card-titulo"><span>    </span> Identificação do Pedido</div>
+    <div class="linha-inputs">
+      <div><label>Número da Mesa</label><input type="number" id="mesa" placeholder="Ex: 12" min="1" max="100"></div>
+      <div><label>Nome do Cliente</label><input type="text" id="cliente" placeholder="Seu nome completo"></div>
+    </div>
+  </div>
+
+  <!-- PRATOS PRINCIPAIS -->
+  <div class="card">
+    <div class="card-titulo"><span>🍽️</span> Pratos Principais</div>
+    <div class="secao-titulo">🐟 Peixes & Frutos do Rio</div>
+    <div class="item-grid" id="grid-peixes"></div>
+    <div class="secao-titulo">🥩 Carnes & Aves</div>
+    <div class="item-grid" id="grid-carnes"></div>
+    <div class="secao-titulo">🌿 Opções Vegetarianas</div>
+    <div class="item-grid" id="grid-veg"></div>
+  </div>
+
+  <!-- PORÇÕES -->
+  <div class="card">
+    <div class="card-titulo"><span>🫕</span> Porções Individuais</div>
+    <div class="secao-titulo">🍟 Petiscos & Entradas</div>
+    <div class="porcao-grid" id="grid-porcoes"></div>
+    <div class="secao-titulo" style="margin-top:20px">🥗 Acompanhamentos Avulsos</div>
+    <div class="porcao-grid" id="grid-acomp"></div>
+  </div>
+
+  <!-- SOBREMESAS -->
+  <div class="card">
+    <div class="card-titulo"><span>🍮</span> Sobremesas</div>
+    <div class="item-grid" id="grid-sobremesas"></div>
+  </div>
+
+  <!-- BEBIDAS -->
+  <div class="card">
+    <div class="card-titulo"><span>🥤</span> Bebidas</div>
+    <div class="secao-titulo">🌺 Sucos & Vitaminas</div>
+    <div class="item-grid" id="grid-sucos"></div>
+    <div class="secao-titulo">🧊 Drinks & Refrigerantes</div>
+    <div class="item-grid" id="grid-drinks"></div>
+  </div>
+
+  <!-- OBSERVAÇÕES -->
+  <div class="card">
+    <div class="card-titulo"><span>📝</span> Observações Gerais</div>
+    <label>Alguma restrição alimentar ou recado para a cozinha?</label>
+    <textarea id="obs-geral" placeholder="Ex: Sem pimenta, alergia a camarão..."></textarea>
+  </div>
+
+  <!-- RESUMO -->
+  <div class="card">
+    <div class="card-titulo"><span>🧾</span> Resumo do Pedido</div>
+    <div id="resumo-lista"><div class="vazio">Nenhum item selecionado ainda.</div></div>
+    <div class="resumo-total" id="resumo-total" style="display:none">
+      <div class="resumo-total-label">Total</div>
+      <div class="resumo-total-valor" id="total-valor">R$ 0,00</div>
+    </div>
+  </div>
+
+  <!-- PAGAMENTO -->
+  <div class="card">
+    <div class="card-titulo"><span>💳</span> Forma de Pagamento</div>
+    <div class="pag-opcoes">
+      <div class="pag-btn" id="btn-pix" onclick="selecionarPag('pix')">
+        <div class="pag-icone">📱</div>
+        <div class="pag-label">PIX</div>
+        <div class="pag-sub">Pagar agora</div>
+      </div>
+      <div class="pag-btn" id="btn-cartao" onclick="selecionarPag('cartao')">
+        <div class="pag-icone">💳</div>
+        <div class="pag-label">Cartão</div>
+        <div class="pag-sub">Pagar depois</div>
+      </div>
+    </div>
+    <div class="pix-info" id="pix-info" style="display:none">
+      <div class="pix-instrucao">Chave PIX do restaurante:</div>
+      <div class="pix-chave">amazon.encanto@pix.com</div>
+      <div class="pix-instrucao">Após o pagamento, envie o comprovante pelo WhatsApp</div>
+    </div>
+  </div>
+
+  <!-- ENVIAR -->
+  <div class="card">
+    <div class="card-titulo"><span>📲</span> Enviar Pedido</div>
+    <button class="btn-enviar" onclick="enviarPedido()">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+      </svg>
+      Enviar Pedido pelo WhatsApp
+    </button>
+    <div class="aguardando" id="aguardando">
+      <div class="aguardando-icone">⏳</div>
+      <div class="aguardando-txt">Aguardando confirmação do restaurante…</div>
+      <div class="aguardando-sub">Você receberá uma mensagem em breve pelo WhatsApp</div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">© 2026 Amazon Encanto Restaurante · Todos os direitos reservados</div>
+
+<script>
+const CARDAPIO = {
+  peixes: [
+    { id:'p1', nome:'Tambaqui na Brasa', desc:'Tambaqui inteiro grelhado na lenha com molho de tucupi e farofa de banana', acomp:'Acompanha: arroz branco, feijão, farofa e salada', preco:89.90 },
+    { id:'p2', nome:'Pirarucu ao Molho Tucupi', desc:'Filé de pirarucu com molho de tucupi, jambu e pimenta de cheiro', acomp:'Acompanha: arroz branco, pirão e salada', preco:79.90 },
+    { id:'p3', nome:'Dourada Grelhada', desc:'Filé de dourada grelhado com ervas finas e limão siciliano', acomp:'Acompanha: arroz, salada e vinagrete', preco:72.90 },
+    { id:'p4', nome:'Camarão na Moranga', desc:'Camarões frescos em creme de abóbora moranga gratinada', acomp:'Acompanha: arroz branco e farofa', preco:94.90 },
+  ],
+  carnes: [
+    { id:'c1', nome:'Picanha Amazônica', desc:'Picanha grelhada com chimichurri de ervas regionais e castanha do Pará', acomp:'Acompanha: arroz, feijão, vinagrete e farofa', preco:98.90 },
+    { id:'c2', nome:'Costela no Bafo', desc:'Costela bovina cozida lentamente por 8h com temperos amazônicos', acomp:'Acompanha: mandioca cozida, arroz e farofa de dendê', preco:110.00 },
+    { id:'c3', nome:'Frango Caipira ao Tucupi', desc:'Coxa e sobrecoxa caipira refogadas em tucupi com jambu fresco', acomp:'Acompanha: arroz, feijão e macaxeira', preco:64.90 },
+  ],
+  veg: [
+    { id:'v1', nome:'Moqueca de Palmito', desc:'Palmito pupunha em moqueca cremosa de leite de coco e urucum', acomp:'Acompanha: arroz integral e farofa', preco:52.90 },
+    { id:'v2', nome:'Risoto de Cogumelos', desc:'Risoto cremoso com mix de cogumelos, azeite de castanha e parmesão', acomp:'Acompanha: salada verde e pão de alho', preco:58.90 },
+  ],
+  porcoes: [
+    { id:'po1', nome:'Macaxeira Frita (P)', desc:'Porção individual crocante e sequinha', preco:14.90 },
+    { id:'po2', nome:'Macaxeira Frita (G)', desc:'Porção família generosa', preco:24.90 },
+    { id:'po3', nome:'Dadinho de Tapioca', desc:'6 unidades com melaço de cana', preco:16.90 },
+    { id:'po4', nome:'Camarão Empanado (6 un)', desc:'Empanados no coco com molho tártaro', preco:22.90 },
+    { id:'po5', nome:'Camarão Empanado (12 un)', desc:'Porção família com molho tártaro', preco:38.90 },
+    { id:'po6', nome:'Tira-gosto Amazônico', desc:'Mix de isca de tambaqui, macaxeira e vinagrete', preco:44.90 },
+  ],
+  acomp: [
+    { id:'ac1', nome:'Arroz Branco', desc:'Porção individual', preco:6.90 },
+    { id:'ac2', nome:'Arroz de Jambu', desc:'Porção individual', preco:9.90 },
+    { id:'ac3', nome:'Feijão', desc:'Porção individual', preco:6.90 },
+    { id:'ac4', nome:'Farofa', desc:'Porção individual', preco:7.90 },
+    { id:'ac5', nome:'Farofa de Dendê', desc:'Porção individual', preco:9.90 },
+    { id:'ac6', nome:'Pirão', desc:'Porção individual', preco:8.90 },
+    { id:'ac7', nome:'Salada Verde', desc:'Porção individual', preco:8.90 },
+    { id:'ac8', nome:'Macaxeira Cozida', desc:'Porção individual', preco:7.90 },
+    { id:'ac9', nome:'Vinagrete', desc:'Porção individual', preco:5.90 },
+  ],
+  sobremesas: [
+    { id:'s1', nome:'Mousse de Cupuaçu', desc:'Mousse aerado de cupuaçu fresco com calda de maracujá', preco:18.90 },
+    { id:'s2', nome:'Pudim de Tapioca', desc:'Pudim cremoso com calda de leite condensado e coco', preco:16.90 },
+    { id:'s3', nome:'Sorvete de Açaí', desc:'Artesanal com granola e banana da terra', preco:19.90 },
+    { id:'s4', nome:'Torta de Cupuaçu', desc:'Gelada com base de biscoito e merengue', preco:22.90, novo:true },
+  ],
+  sucos: [
+    { id:'b1', nome:'Suco de Açaí Natural', desc:'Açaí batido puro sem leite', preco:14.90 },
+    { id:'b2', nome:'Vitamina de Cupuaçu', desc:'Cupuaçu com leite de castanha e mel', preco:13.90 },
+    { id:'b3', nome:'Suco de Guaraná Natural', desc:'Guaraná fresco espremido na hora', preco:12.90 },
+    { id:'b4', nome:'Limonada de Jambu', desc:'Com folhas de jambu e hortelã fresca', preco:11.90, novo:true },
+  ],
+  drinks: [
+    { id:'b5', nome:'Água Mineral (500ml)', desc:'Com ou sem gás', preco:5.90 },
+    { id:'b6', nome:'Refrigerante Lata', desc:'Coca-Cola, Guaraná Antarctica ou Sprite', preco:7.90 },
+    { id:'b7', nome:'Cerveja Gelada (600ml)', desc:'Brahma, Skol ou Heineken', preco:13.90 },
+    { id:'b8', nome:'Caipirinha de Cachaça', desc:'Limão, açúcar e cachaça artesanal', preco:18.90 },
+    { id:'b9', nome:'Caipirinha de Açaí', desc:'Açaí fresco com vodka, limão e açúcar', preco:22.90, novo:true },
+  ],
+};
+
+const pedido = {};
+let pagamento = null;
+
+function fmt(v){ return 'R$ '+v.toFixed(2).replace('.',','); }
+
+// Renderiza itens de prato (linha horizontal)
+function renderGrupo(gridId, itens) {
+  const grid = document.getElementById(gridId);
+  grid.innerHTML = '';
+  itens.forEach(item => {
+    const sel = !!pedido[item.id];
+    const div = document.createElement('div');
+    div.className = 'item-card'+(sel?' selecionado':'');
+    div.id = 'card-'+item.id;
+    div.innerHTML = `
+      <div class="item-check">${sel?'✓':''}</div>
+      <div class="item-info">
+        <div class="item-nome">${item.nome}${item.novo?` <span class="badge-novo">Novo</span>`:''}</div>
+        <div class="item-desc">${item.desc}</div>
+        ${item.acomp?`<div class="item-acomp">🌿 ${item.acomp}</div>`:''}
+        ${sel?`
+          <div class="item-qtd">
+            <button class="btn-qtd" onclick="alterarQtd('${item.id}',-1,event)">−</button>
+            <div class="qtd-num">${pedido[item.id].qty}</div>
+            <button class="btn-qtd" onclick="alterarQtd('${item.id}',1,event)">+</button>
+          </div>
+          <div class="obs-item"><input type="text" placeholder="Observação para este prato..." value="${pedido[item.id].obs||''}" oninput="atualizarObs('${item.id}',this.value)"></div>
+        `:''}
+      </div>
+      <div class="item-preco">${fmt(item.preco)}</div>`;
+    div.addEventListener('click', e => {
+      if(e.target.closest('.btn-qtd')||e.target.closest('input')) return;
+      toggleItem(item.id, item);
+    });
+    grid.appendChild(div);
+  });
+}
+
+// Renderiza porções (cards menores em grid)
+function renderPorcoes(gridId, itens) {
+  const grid = document.getElementById(gridId);
+  grid.innerHTML = '';
+  itens.forEach(item => {
+    const sel = !!pedido[item.id];
+    const div = document.createElement('div');
+    div.className = 'porcao-card'+(sel?' selecionado':'');
+    div.id = 'card-'+item.id;
+    div.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div class="porcao-nome">${item.nome}${item.novo?` <span class="badge-novo">Novo</span>`:''}</div>
+        <div style="font-size:1rem">${sel?'✅':''}</div>
+      </div>
+      <div class="porcao-desc">${item.desc}</div>
+      <div class="porcao-preco">${fmt(item.preco)}</div>
+      ${sel?`
+        <div class="porcao-qtd">
+          <button class="btn-qtd" onclick="alterarQtd('${item.id}',-1,event)">−</button>
+          <div class="qtd-num">${pedido[item.id].qty}</div>
+          <button class="btn-qtd" onclick="alterarQtd('${item.id}',1,event)">+</button>
+        </div>
+      `:''}`;
+    div.addEventListener('click', e => {
+      if(e.target.closest('.btn-qtd')) return;
+      toggleItem(item.id, item);
+    });
+    grid.appendChild(div);
+  });
+}
+
+function toggleItem(id, item) {
+  pedido[id] ? delete pedido[id] : (pedido[id] = {item, qty:1, obs:''});
+  rerenderTudo();
+}
+function alterarQtd(id, delta, e) {
+  e.stopPropagation();
+  if(!pedido[id]) return;
+  pedido[id].qty = Math.max(1, pedido[id].qty + delta);
+  rerenderTudo();
+}
+function atualizarObs(id, val) { if(pedido[id]) pedido[id].obs = val; }
+
+function rerenderTudo() {
+  renderGrupo('grid-peixes', CARDAPIO.peixes);
+  renderGrupo('grid-carnes', CARDAPIO.carnes);
+  renderGrupo('grid-veg', CARDAPIO.veg);
+  renderPorcoes('grid-porcoes', CARDAPIO.porcoes);
+  renderPorcoes('grid-acomp', CARDAPIO.acomp);
+  renderGrupo('grid-sobremesas', CARDAPIO.sobremesas);
+  renderGrupo('grid-sucos', CARDAPIO.sucos);
+  renderGrupo('grid-drinks', CARDAPIO.drinks);
+  atualizarResumo();
+}
+
+function atualizarResumo() {
+  const lista = document.getElementById('resumo-lista');
+  const totalDiv = document.getElementById('resumo-total');
+  const itens = Object.values(pedido);
+  if(!itens.length){ lista.innerHTML='<div class="vazio">Nenhum item selecionado ainda.</div>'; totalDiv.style.display='none'; return; }
+  let total=0;
+  lista.innerHTML = itens.map(({item,qty,obs})=>{
+    const sub=item.preco*qty; total+=sub;
+    return `<div class="resumo-linha">
+      <div class="resumo-nome">${qty}x ${item.nome}${obs?`<br><small style="color:rgba(245,240,232,0.5)">Obs: ${obs}</small>`:''}</div>
+      <div class="resumo-preco">${fmt(sub)}</div>
+    </div>`;
+  }).join('');
+  totalDiv.style.display='flex';
+  document.getElementById('total-valor').textContent=fmt(total);
+}
+
+function selecionarPag(tipo) {
+  pagamento=tipo;
+  document.getElementById('btn-pix').classList.toggle('ativo',tipo==='pix');
+  document.getElementById('btn-cartao').classList.toggle('ativo',tipo==='cartao');
+  document.getElementById('pix-info').style.display=tipo==='pix'?'block':'none';
+}
+
+function enviarPedido() {
+  const mesa=document.getElementById('mesa').value.trim();
+  const cliente=document.getElementById('cliente').value.trim();
+  const obsGeral=document.getElementById('obs-geral').value.trim();
+  const itens=Object.values(pedido);
+  if(!mesa){alert('⚠️ Informe o número da mesa!');return;}
+  if(!cliente){alert('⚠️ Informe o nome do cliente!');return;}
+  if(!itens.length){alert('⚠️ Selecione ao menos um item!');return;}
+  if(!pagamento){alert('⚠️ Escolha a forma de pagamento!');return;}
+  let total=0;
+  const linhas=itens.map(({item,qty,obs})=>{
+    const sub=item.preco*qty; total+=sub;
+    return `▸ ${qty}x ${item.nome} — ${fmt(sub)}${obs?'\n   Obs: '+obs:''}`;
+  }).join('\n');
+  const msg=`🌿 *AMAZON ENCANTO RESTAURANTE*\n🪵 Novo Pedido!\n\n🪑 *Mesa:* ${mesa}\n👤 *Cliente:* ${cliente}\n\n━━━━━━━━━━━━━━━━━━\n📋 *ITENS DO PEDIDO:*\n${linhas}\n━━━━━━━━━━━━━━━━━━\n💰 *Total: ${fmt(total)}*\n${pagamento==='pix'?'📱 PIX (enviado)':'💳 Cartão (pagar depois)'}${obsGeral?'\n📝 *Obs. Gerais:* '+obsGeral:''}\n\n_Aguardando confirmação_ ✅`;
+  window.open(`https://wa.me/5541988238802?text=${encodeURIComponent(msg)}`,'_blank');
+  document.getElementById('aguardando').classList.add('visivel');
+}
+
+rerenderTudo();
+</script>
+</body>
+</html>
