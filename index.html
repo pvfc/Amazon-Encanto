@@ -411,7 +411,7 @@ function enviarPedido() {
     const sub=item.preco*qty; total+=sub;
     return `▸ ${qty}x ${item.nome} — ${fmt(sub)}${obs?'\n   Obs: '+obs:''}`;
   }).join('\n');
-  const msg=`🌿 *AMAZON ENCANTO RESTAURANTE*\n🪵 Novo Pedido!\n\n🪑 *Mesa:* ${mesa}\n👤 *Cliente:* ${cliente}\n\n━━━━━━━━━━━━━━━━━━\n📋 *ITENS DO PEDIDO:*\n${linhas}\n━━━━━━━━━━━━━━━━━━\n💰 *Total: ${fmt(total)}*\n${pagamento==='pix'?'📱 PIX (enviado)':'💳 Cartão (pagar depois)'}${obsGeral?'\n📝 *Obs. Gerais:* '+obsGeral:''}\n\n_Aguardando confirmação_ ✅`;
+  const msg=`🌿 *AMAZON ENCANTO RESTAURANTE*\n Novo Pedido!\n\n🪑 *Mesa:* ${mesa}\n👤 *Cliente:* ${cliente}\n\n━━━━━━━━━━━━━━━━━━\n📋 *ITENS DO PEDIDO:*\n${linhas}\n━━━━━━━━━━━━━━━━━━\n💰 *Total: ${fmt(total)}*\n${pagamento==='pix'?'📱 PIX (enviado)':'💳 Cartão (pagar depois)'}${obsGeral?'\n📝 *Obs. Gerais:* '+obsGeral:''}\n\n_Aguardando confirmação_ ✅`;
   window.open(`https://wa.me/5541988238802?text=${encodeURIComponent(msg)}`,'_blank');
   document.getElementById('aguardando').classList.add('visivel');
 }
